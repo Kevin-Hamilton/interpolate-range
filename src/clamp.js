@@ -6,8 +6,10 @@ export default function clamp(
   x: number,
 ): number {
   let val = x;
-  if (val < from) val = from;
-  if (val > to) val = to;
+  let min = Math.min(from, to);
+  let max = Math.max(from, to);
+  if (val < min) val = min;
+  if (val > max) val = max;
 
   return val;
 }

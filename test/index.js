@@ -16,6 +16,15 @@ test('interpolate provides correct result', function(t) {
     outputRange: [0, 1],
     fn: smoothStep,
   });
+  const intNonZeroOutputMin = interpolate({
+    inputRange: [0, 100],
+    outputRange: [20,40]
+  });
+  const intClampMaxBeforeMin = interpolate({
+    inputRange: [0, 100],
+    outputRange: [1, 0],
+    clamp: true
+  });
 
   // basic
   t.equal( int(1), -99 )
@@ -37,6 +46,16 @@ test('interpolate provides correct result', function(t) {
   t.equal( intSmooth(300), 0.5829903978052127 )
   t.equal( intSmooth(400), 0.8737997256515775 )
   t.equal( intSmooth(600), 1 )
+
+  // output range that doesn't start at zero
+  t.equal( intNonZeroOutputMin(50), 30 )
+  t.equal( intNonZeroOutputMin(-50), 10 )
+  t.equal( intNonZeroOutputMin(100), 40 )
+
+  // clamp an output range that goes from a higher number to a lower number
+  t.equal( intClampMaxBeforeMin(75), 0.25 )
+  t.equal( intClampMaxBeforeMin(-50), 1 )
+  t.equal( intClampMaxBeforeMin(150), 0 )
 
   t.end()
 })
